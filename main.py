@@ -42,17 +42,14 @@ def decode(image: Image):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-e", "--encode", action="store_true", help="Use the encoding function")
-    parser.add_argument("-d", "--decode", action="store_true", help="Use the decoding function")
+    mode_group = parser.add_mutually_exclusive_group(required=True)
+    mode_group.add_argument("-e", "--encode", action="store_true", help="Use the encoding function")
+    mode_group.add_argument("-d", "--decode", action="store_true", help="Use the decoding function")
     parser.add_argument("-if","--imagefile", type=argparse.FileType('r'), help="Name of image file", required=True)
     parser.add_argument("-tf","--textfile", type=argparse.FileType('r'), help="Name of text file")
     parser.add_argument("-t", "--text", type=str, help="manual text input")
     parser.add_argument("-of", "--outputfile", type=str, help="Name of output file")
     args = parser.parse_args()
-
-
-    if not(any([(args.encode or args.decode), args.imagefile])):
-        sys.exit()
 
     img = Image.open(args.imagefile.name).convert("RGBA")
 
@@ -67,7 +64,7 @@ if __name__ == "__main__":
         if args.outputfile:
             new_img.save(args.outputfile)
 
-    elif args.decode:
+    elif args.decode: 
         text = decode(img)
         if args.outputfile:
             with open(args.outputfile, "w") as f:
