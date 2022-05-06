@@ -1,5 +1,4 @@
 from PIL import Image
-import sys
 import argparse
 import numpy as np
 
